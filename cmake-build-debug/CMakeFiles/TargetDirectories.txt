@@ -1,0 +1,3 @@
+/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arqui/cmake-build-debug/CMakeFiles/Proyecto_final_arqui.dir
+/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arqui/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arqui/cmake-build-debug/CMakeFiles/rebuild_cache.dir
