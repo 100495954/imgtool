@@ -148,7 +148,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Proyecto_final_arqui
+CMAKE_PROJECT_NAME:STATIC=Proyecto_final_arquitectura
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -223,6 +223,15 @@ Proyecto_final_arqui_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Proyecto_final_arqui_SOURCE_DIR:STATIC=/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arquitectura
+
+//Value Computed by CMake
+Proyecto_final_arquitectura_BINARY_DIR:STATIC=/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arquitectura/cmake-build-debug
+
+//Value Computed by CMake
+Proyecto_final_arquitectura_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+Proyecto_final_arquitectura_SOURCE_DIR:STATIC=/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arquitectura
 
 
 ########################

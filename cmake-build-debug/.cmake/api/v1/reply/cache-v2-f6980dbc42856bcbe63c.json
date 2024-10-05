@@ -843,7 +843,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "Proyecto_final_arqui"
+			"value" : "Proyecto_final_arquitectura"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1167,6 +1167,42 @@
 		},
 		{
 			"name" : "Proyecto_final_arqui_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arquitectura"
+		},
+		{
+			"name" : "Proyecto_final_arquitectura_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/pablo/Escritorio/Arquitectura_Computadores/Proyecto-final-arquitectura/cmake-build-debug"
+		},
+		{
+			"name" : "Proyecto_final_arquitectura_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "Proyecto_final_arquitectura_SOURCE_DIR",
 			"properties" : 
 			[
 				{
