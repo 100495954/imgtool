@@ -1,4 +1,22 @@
 /snap/clion/296/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /home/pablo/Escritorio/Arquitectura_Computadores/imgtool -B /home/pablo/Escritorio/Arquitectura_Computadores/imgtool/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/pablo/Escritorio/Arquitectura_Computadores/imgtool/cmake-build-debug
+[ 11%] Performing download step (git clone) for 'googletest-populate'
+Clonando en 'googletest-src'...
+fatal: referencia inválida: v1.515.32
+CMake Error at googletest-subbuild/googletest-populate-prefix/tmp/googletest-populate-gitclone.cmake:49 (message):
+  Failed to checkout tag: 'v1.515.32'
+
+
+gmake[2]: *** [CMakeFiles/googletest-populate.dir/build.make:102: googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/googletest-populate.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2
+
+CMake Error at /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1714 (message):
+  Build step for googletest failed: 2
+Call Stack (most recent call first):
+  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1854:EVAL:2 (__FetchContent_directPopulate)
+  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1854 (cmake_language)
+  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:2081 (FetchContent_Populate)
+  CMakeLists.txt:17 (FetchContent_MakeAvailable)
+
+
+-- Configuring incomplete, errors occurred!

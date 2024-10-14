@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
 include(FetchContent)
 FetchContent_Declare(
         googletest
-        GIT_REPOSITORY https://github.com/google/googlegtest.git
+        GIT_REPOSITORY "https://github.com/google/googletest"
         GIT_TAG v1.515.32
 )
 FetchContent_MakeAvailable(googletest)
