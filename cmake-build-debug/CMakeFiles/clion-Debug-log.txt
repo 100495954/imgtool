@@ -1,22 +1,98 @@
-/snap/clion/296/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /home/pablo/Escritorio/Arquitectura_Computadores/imgtool -B /home/pablo/Escritorio/Arquitectura_Computadores/imgtool/cmake-build-debug
-[ 11%] Performing download step (git clone) for 'googletest-populate'
-Clonando en 'googletest-src'...
-fatal: referencia inválida: v1.515.32
-CMake Error at googletest-subbuild/googletest-populate-prefix/tmp/googletest-populate-gitclone.cmake:49 (message):
-  Failed to checkout tag: 'v1.515.32'
+"C:\Program Files\JetBrains\CLion 2023.3.3\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S "C:\Users\claud\OneDrive\Escritorio\UNIVERSIDAD\3er CURSO\1er CUATRI\ARQ_COMPU\imgtool" -B "C:\Users\claud\OneDrive\Escritorio\UNIVERSIDAD\3er CURSO\1er CUATRI\ARQ_COMPU\imgtool\cmake-build-debug"
+CMake Deprecation Warning:
+  Support for "Extra Generators" like
+
+    CodeBlocks
+
+  is deprecated and will be removed from a future version of CMake.  IDEs may
+  use the cmake-file-api(7) to view CMake-generated project build trees.
 
 
-gmake[2]: *** [CMakeFiles/googletest-populate.dir/build.make:102: googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download] Error 1
-gmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/googletest-populate.dir/all] Error 2
-gmake: *** [Makefile:91: all] Error 2
+-- The C compiler identification is GNU 13.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2023.3.3/bin/mingw/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Found Python: C:/Users/claud/AppData/Local/Programs/Python/Python312/python.exe (found version "3.12.1") found components: Interpreter 
+CMake Error at CMakeLists.txt:32 (add_subdirectory):
+  The source directory
 
-CMake Error at /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1714 (message):
-  Build step for googletest failed: 2
-Call Stack (most recent call first):
-  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1854:EVAL:2 (__FetchContent_directPopulate)
-  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:1854 (cmake_language)
-  /snap/clion/296/bin/cmake/linux/x64/share/cmake-3.29/Modules/FetchContent.cmake:2081 (FetchContent_Populate)
-  CMakeLists.txt:17 (FetchContent_MakeAvailable)
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/common
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:33 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/imgaos
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:34 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/imgsoa
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:35 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/imtool-aos
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:36 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/imtool-soa
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:39 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/utest-common
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:40 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/utest-imgaos
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:41 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/utest-img-soa
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:42 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/ftest-aos
+
+  does not contain a CMakeLists.txt file.
+
+
+CMake Error at CMakeLists.txt:43 (add_subdirectory):
+  The source directory
+
+    C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/ftest-soa
+
+  does not contain a CMakeLists.txt file.
 
 
 -- Configuring incomplete, errors occurred!

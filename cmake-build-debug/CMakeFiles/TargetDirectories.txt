@@ -1,2 +1,0 @@
-/home/pablo/Escritorio/Arquitectura_Computadores/imgtool/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/pablo/Escritorio/Arquitectura_Computadores/imgtool/cmake-build-debug/CMakeFiles/rebuild_cache.dir
