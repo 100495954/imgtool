@@ -16,12 +16,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-FetchContent_Declare(GLS
+FetchContent_Declare(GSL
     GIT_REPOSITORY "https://github.com/microsoft/GSL"
     GIT_TAG v4.0.0
     GIT_SHALLOW ON
 )
-FetchContent_MakeAvailable(GLS)
+FetchContent_MakeAvailable(GSL)
 
 set(CMAKE_CXX_CLANG_TIDY clang-tidy;
         -format-style=file;

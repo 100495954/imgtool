@@ -334,6 +334,10 @@ FETCHCONTENT_SOURCE_DIR_GLS:PATH=
 // for googletest
 FETCHCONTENT_SOURCE_DIR_GOOGLETEST:PATH=
 
+//When not empty, overrides where to find pre-populated content
+// for GSL
+FETCHCONTENT_SOURCE_DIR_GSL:PATH=
+
 //Enables UPDATE_DISCONNECTED behavior for all content population
 FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 
@@ -343,11 +347,14 @@ FETCHCONTENT_UPDATES_DISCONNECTED_GLS:BOOL=OFF
 //Enables UPDATE_DISCONNECTED behavior just for population of googletest
 FETCHCONTENT_UPDATES_DISCONNECTED_GOOGLETEST:BOOL=OFF
 
+//Enables UPDATE_DISCONNECTED behavior just for population of GSL
+FETCHCONTENT_UPDATES_DISCONNECTED_GSL:BOOL=OFF
+
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=C:/Program Files/Git/cmd/git.exe
 
 //Value Computed by CMake
-GSL_BINARY_DIR:STATIC=C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/cmake-build-debug/_deps/gls-build
+GSL_BINARY_DIR:STATIC=C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/cmake-build-debug/_deps/gsl-build
 
 //Generate and install GSL target
 GSL_INSTALL:BOOL=OFF
@@ -356,7 +363,7 @@ GSL_INSTALL:BOOL=OFF
 GSL_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-GSL_SOURCE_DIR:STATIC=C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/cmake-build-debug/_deps/gls-src
+GSL_SOURCE_DIR:STATIC=C:/Users/claud/OneDrive/Escritorio/UNIVERSIDAD/3er CURSO/1er CUATRI/ARQ_COMPU/imgtool/cmake-build-debug/_deps/gsl-src
 
 //Build and perform GSL tests
 GSL_TEST:BOOL=OFF
