@@ -1,8 +1,8 @@
-# Add to this list all files related to common library
-add_library(common STATIC
-        progargs.cpp
+add_library(common
+        progargs.hpp progargs.cpp
         binario.cpp
-
-)
-# Use this line only if you have dependencies from this library to GSL
-target_link_libraries (common PRIVATE Microsoft.GSL::GSL)
+        info.cpp
+        info.hpp
+        ../utest-common/utest-common.cpp
+        ../utest-img-soa/utest-img-soa.cpp)
+target_link_libraries(common PRIVATE Microsoft.GSL::GSL)
