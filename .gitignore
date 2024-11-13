@@ -1,3 +1,5 @@
 .idea/**
-cmake-*/**
+cmake-build-debug
+cmake-build-debug-address-sanitizer
+cmake-build-release
 build
