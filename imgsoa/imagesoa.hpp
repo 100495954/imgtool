@@ -50,6 +50,11 @@ namespace imgsoa {
     int height;
   };
 
+  struct Picture {
+    std::vector<uint8_t> r, g, b;
+    int width{}, height{};
+  };
+
   class Image {
     public:
     image_size size;
@@ -100,13 +105,13 @@ namespace imgsoa {
 
   void write_pixels(Image& image, std::map<std::tuple<uint16_t, uint16_t, uint16_t>, uint32_t>& color_list,std::string& filename);
 
-  Image loadPPM(std::string const & filename);
+  bool loadPPM(std::string const & filename, Picture & image);
 
-  bool savePPM(std::string const & filename, Image const & image);
+  bool savePPM(std::string const & filename, Picture const & image);
 
-  void bilinearInterpolate(const Image& original, double xcoord, double ycoord, Pixel& color);
+  void bilinearInterpolate(const Picture& original, double xcoord, double ycoord, Pixel& color);
 
-  Image resizeImage(Image const & original, int newWidth, int newHeight);
+  Picture resizeImage(Picture const & original, int newWidth, int newHeight);
 
   void handle_maxlevel_optionSOA(std::vector<std::string> const &args, const progargsCommon::parameters_files& params);
 

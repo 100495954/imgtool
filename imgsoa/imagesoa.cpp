@@ -161,117 +161,118 @@ namespace imgsoa {
     write_pixels(image, color_list, params.output_file);
   }
 
-  Image loadPPM(std::string const & filename) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {
-      std::cerr << "Error: Could not open file " << filename << '\n';
-      return Image({.width = 0,.height= 0},0);
-    }
-    int const limit = 255;
-    int width = 0;
-    int height = 0;
-    int maxColorValue = 0;
-    std::string header;
-    file >> header>> width >> height>> maxColorValue;
-    if (header != "P6") {
-      std::cerr << "Error: Unsupported PPM format (" << header << ")" << '\n';
-      return Image({.width =  0,.height = 0},0);
-    }
-    std::cout<<"formato correcto \n";
-    Image image({.width = width, .height = height}, maxColorValue);
-    file.get();
-
-
-    for (std::size_t i = 0; i < image.red.size(); ++i) {
-      if (image.max_color <= limit) {
-        image.red[i] = static_cast<uint16_t>(binario::read_binary<uint8_t>(file));
-        image.green[i] = static_cast<uint16_t>(binario::read_binary<uint8_t>(file));
-        image.blue[i] = static_cast<uint16_t>(binario::read_binary<uint8_t>(file));
-      } else {
-        image.red[i] = binario::read_binary<uint16_t>(file);
-        image.green[i] = binario::read_binary<uint16_t>(file);
-        image.blue[i] = binario::read_binary<uint16_t>(file);
-      }
-    }
-
-    return image;
-  }
-  bool savePPM(std::string const & filename, Image const & image) {
-    std::ofstream file(filename, std::ios::binary);
-    if (!file) {
-      std::cerr << "Error: Could not open file " << filename << " for writing." << '\n';
-      return false;
-    }
-
-    file << "P6\n" << image.size.width << " " << image.size.height << "\n255\n";
-
-    for (std::size_t i = 0; i < image.red.size(); ++i) {
-      binario::write_birary(file, image.red[i]);
-      binario::write_birary(file, image.green[i]);
-      binario::write_birary(file, image.blue[i]);
-    }
-
-    return true;
+  bool loadPPM(std::string const & filename, Picture & image) {
+  std::ifstream file(filename, std::ios::binary);
+  if (!file) {
+    std::cerr << "Error: Could not open file " << filename << '\n';
+    return false;
   }
 
-  void bilinearInterpolate(const Image& original, double xcoord, double ycoord, Pixel& color) {
+  std::string header;
+  file >> header;
+  if (header != "P6") {
+    std::cerr << "Error: Unsupported PPM format (" << header << ")" << '\n';
+    return false;
+  }
+
+  file >> image.width >> image.height;
+  int maxColorValue = 0;
+  file >> maxColorValue;
+  file.get();
+
+  image.r.resize(static_cast<std::size_t>(image.width) * static_cast<std::size_t>(image.height));
+  image.g.resize(static_cast<std::size_t>(image.width) * static_cast<std::size_t>(image.height));
+  image.b.resize(static_cast<std::size_t>(image.width) * static_cast<std::size_t>(image.height));
+
+  for (std::size_t i = 0; i < image.r.size(); ++i) {
+    image.r[i] = binario::read_binary<uint8_t>(file);
+    image.g[i] = binario::read_binary<uint8_t>(file);
+    image.b[i] = binario::read_binary<uint8_t>(file);
+  }
+
+  return true;
+}
+
+bool savePPM(std::string const & filename, Picture const & image) {
+  std::ofstream file(filename, std::ios::binary);
+  if (!file) {
+    std::cerr << "Error: Could not open file " << filename << " for writing." << '\n';
+    return false;
+  }
+
+  file << "P6\n" << image.width << " " << image.height << "\n255\n";
+
+  for (std::size_t i = 0; i < image.r.size(); ++i) {
+    binario::write_birary(file, image.r[i]);
+    binario::write_birary(file, image.g[i]);
+    binario::write_birary(file, image.b[i]);
+  }
+
+  return true;
+}
+
+void bilinearInterpolate(const Picture& original, double xcoord, double ycoord, Pixel& color) {
   auto getClampedIndex = [](double value, std::size_t max) {
     return std::clamp(static_cast<std::size_t>(value), 0UL, max);
   };
 
-  auto interpolate = [](double w1_, double w2_, double w3_, double w4_, uint16_t c1_, uint16_t c2_,
-                        uint16_t c3_, uint16_t c4_) {
-    return static_cast<uint16_t>((w1_ * c1_) + (w2_ * c2_) + (w3_ * c3_) + (w4_ * c4_));
+  auto interpolate = [](double w1_, double w2_, double w3_, double w4_, uint8_t c1_, uint8_t c2_,
+                        uint8_t c3_, uint8_t c4_) {
+    return static_cast<uint8_t>((w1_ * c1_) + (w2_ * c2_) + (w3_ * c3_) + (w4_ * c4_));
   };
 
-  std::size_t const xl_ = getClampedIndex(std::floor(xcoord), static_cast<size_t>(original.size.width - 1));
-  std::size_t const xh_ = getClampedIndex(std::ceil(xcoord), static_cast<size_t>(original.size.width - 1));
-  std::size_t const yl_ = getClampedIndex(std::floor(ycoord), static_cast<size_t>(original.size.height - 1));
-  std::size_t const yh_ = getClampedIndex(std::ceil(ycoord), static_cast<size_t>(original.size.height - 1));
+  std::size_t const xl_ = getClampedIndex(std::floor(xcoord), static_cast<size_t>(original.width - 1));
+  std::size_t const xh_ = getClampedIndex(std::ceil(xcoord), static_cast<size_t>(original.width - 1));
+  std::size_t const yl_ = getClampedIndex(std::floor(ycoord), static_cast<size_t>(original.height - 1));
+  std::size_t const yh_ = getClampedIndex(std::ceil(ycoord), static_cast<size_t>(original.height - 1));
 
-  std::size_t const idx1 = (yl_ * static_cast<size_t>(original.size.width)) + xl_;
-  std::size_t const idx2 = (yl_ * static_cast<size_t>(original.size.width)) + xh_;
-  std::size_t const idx3 = (yh_ * static_cast<size_t>(original.size.width)) + xl_;
-  std::size_t const idx4 = (yh_ * static_cast<size_t>(original.size.width)) + xh_;
+  std::size_t const idx1 = (yl_ * static_cast<size_t>(original.width)) + xl_;
+  std::size_t const idx2 = (yl_ * static_cast<size_t>(original.width)) + xh_;
+  std::size_t const idx3 = (yh_ * static_cast<size_t>(original.width)) + xl_;
+  std::size_t const idx4 = (yh_ * static_cast<size_t>(original.width)) + xh_;
 
   double const xWeight = xcoord - static_cast<double>(xl_);
   double const yWeight = ycoord - static_cast<double>(yl_);
 
-  color.red = static_cast<uint8_t>(interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
+  color.red = interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
                             (1 - xWeight) * yWeight, xWeight * yWeight,
-                            original.red[idx1], original.red[idx2], original.red[idx3], original.red[idx4]));
-  color.green = static_cast<uint8_t>(interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
+                            original.r[idx1], original.r[idx2], original.r[idx3], original.r[idx4]);
+  color.green = interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
                             (1 - xWeight) * yWeight, xWeight * yWeight,
-                            original.green[idx1], original.green[idx2], original.green[idx3], original.green[idx4]));
-  color.blue = static_cast<uint8_t>(interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
+                            original.g[idx1], original.g[idx2], original.g[idx3], original.g[idx4]);
+  color.blue = interpolate((1 - xWeight) * (1 - yWeight), xWeight * (1 - yWeight),
                             (1 - xWeight) * yWeight, xWeight * yWeight,
-                            original.blue[idx1], original.blue[idx2], original.blue[idx3], original.blue[idx4]));
+                            original.b[idx1], original.b[idx2], original.b[idx3], original.b[idx4]);
+}
 
-  }
+Picture resizeImage(Picture const & original, int newWidth, int newHeight) {
+  Picture resized;
+  resized.width  = newWidth;
+  resized.height = newHeight;
+  resized.r.resize(static_cast<std::size_t>(newWidth) * static_cast<std::size_t>(newHeight));
+  resized.g.resize(static_cast<std::size_t>(newWidth) * static_cast<std::size_t>(newHeight));
+  resized.b.resize(static_cast<std::size_t>(newWidth) * static_cast<std::size_t>(newHeight));
 
-  Image resizeImage(Image const & original, int newWidth, int newHeight) {
-    Image resized = Image(image_size(newWidth, newHeight), original.max_color);
+  for (std::size_t y_ = 0; y_ < static_cast<std::size_t>(newHeight); ++y_) {
+    for (std::size_t x_ = 0; x_ < static_cast<std::size_t>(newWidth); ++x_) {
+      auto const originalX = static_cast<double>(x_) * (static_cast<double>(original.width - 1) /
+                                                        static_cast<double>(newWidth - 1));
+      auto const originalY = static_cast<double>(y_) * (static_cast<double>(original.height - 1) /
+                                                        static_cast<double>(newHeight - 1));
 
-    for (std::size_t y_ = 0; y_ < static_cast<std::size_t>(newHeight); ++y_) {
-      for (std::size_t x_ = 0; x_ < static_cast<std::size_t>(newWidth); ++x_) {
-        auto const originalX = static_cast<double>(x_) * (static_cast<double>(original.size.width - 1) /
-                                                          static_cast<double>(newWidth - 1));
-        auto const originalY = static_cast<double>(y_) * (static_cast<double>(original.size.height - 1) /
-                                                          static_cast<double>(newHeight - 1));
+      Pixel color{};
+      bilinearInterpolate(original, originalX, originalY, color);
 
-        Pixel color{};
-        bilinearInterpolate(original, originalX, originalY, color);
-
-        std::size_t const idx = (y_ * static_cast<std::size_t>(newWidth)) +
-                                x_;
-        resized.red[idx] = static_cast<uint16_t>(color.red);
-        resized.green[idx] = static_cast<uint16_t>(color.green);
-        resized.blue[idx] = static_cast<uint16_t>(color.blue);
-      }
+      std::size_t const idx = (y_ * static_cast<std::size_t>(newWidth)) +
+                              x_;
+      resized.r[idx] = color.red;
+      resized.g[idx] = color.green;
+      resized.b[idx] = color.blue;
     }
-
-    return resized;
   }
+
+  return resized;
+}
 
 
 bool Photo::load(const std::string& filename) {

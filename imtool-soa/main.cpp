@@ -23,11 +23,11 @@ int main(int argc, char *argv[]) {
     common::info(params);
   }
   if (strcmp(args[3].c_str(),"resize") == 0) {
-    imgsoa::Image const original = imgsoa::loadPPM(args[1]);
-    imgsoa::Image const resized  = imgsoa::resizeImage(original,std::stoi(args[4]),std::stoi(args[5]));
-    if (!savePPM(args[2], resized)) { return 1; }
+    imgsoa::Picture original;
+    if (!imgsoa::loadPPM(args[1], original)) { return 1; }
+    imgsoa::Picture const resized = resizeImage(original, std::stoi(args[4]), std::stoi(args[5]));
+    if (!imgsoa::savePPM(args[2], resized)) { return 1; }
     std::cout << "Resized image saved to " << args[2] << "\n";
-    return 0;
   }
   if (strcmp(args[3].c_str(),"maxlevel")==0) {
     imgsoa::process_parametersSOA(args);
