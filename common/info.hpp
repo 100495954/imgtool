@@ -13,4 +13,4 @@ namespace common {
   void info(const progargsCommon::parameters_files& params);
 }
 
-#endif //INFO_HPP
+#endif //COMMON_INFO_HPP
