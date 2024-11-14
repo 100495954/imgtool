@@ -274,92 +274,90 @@ Picture resizeImage(Picture const & original, int newWidth, int newHeight) {
   return resized;
 }
 
-
-bool Photo::load(const std::string& filename) {
+  bool loadPhoto(const std::string& filename, Photo& photo) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file: " << filename << '\n';
-        return false;
+      std::cerr << "Error opening file: " << filename << '\n';
+      return false;
     }
 
-    if (!readHeader(file)) {
-        return false;
+    if (!readHeader(file, photo)) {
+      return false;
     }
 
-    size_t const pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
-    red.resize(pixelCount);
-    green.resize(pixelCount);
-    blue.resize(pixelCount);
+    size_t const pixelCount = static_cast<size_t>(photo.width) * static_cast<size_t>(photo.height);
+    photo.red.resize(pixelCount);
+    photo.green.resize(pixelCount);
+    photo.blue.resize(pixelCount);
 
-    if (maxColorValue <= MAX_COLOR_VALUE_8BIT) {
-        readPixels<unsigned char>(file, pixelCount);
+    if (photo.maxColorValue <= MAX_COLOR_VALUE_8BIT) {
+      readPixels<unsigned char>(file, pixelCount, photo.red, photo.green, photo.blue);
     } else {
-        readPixels<unsigned short>(file, pixelCount);
+      readPixels<unsigned short>(file, pixelCount, photo.red, photo.green, photo.blue);
     }
 
     return true;
-}
+  }
 
-bool Photo::readHeader(std::ifstream& file) {
-    file >> magicNumber >> width >> height >> maxColorValue;
+  bool readHeader(std::ifstream& file, Photo& photo) {
+    file >> photo.magicNumber >> photo.width >> photo.height >> photo.maxColorValue;
     file.ignore(1); // Ignore the newline character after maxColorValue
 
-    if (magicNumber != "P6") {
-        std::cerr << "Error: Unsupported file format.\n";
-        return false;
+    if (photo.magicNumber != "P6") {
+      std::cerr << "Error: Unsupported file format.\n";
+      return false;
     }
     return true;
-}
+  }
 
-template<typename T>
-void Photo::readPixels(std::ifstream& file, size_t pixelCount) {
+  template<typename T>
+  void readPixels(std::ifstream& file, size_t pixelCount, std::vector<unsigned int>& red, std::vector<unsigned int>& green, std::vector<unsigned int>& blue) {
     for (size_t i = 0; i < pixelCount; ++i) {
-        red[i] = binario::read_binary<T>(file);
-        green[i] = binario::read_binary<T>(file);
-        blue[i] = binario::read_binary<T>(file);
+      red[i] = binario::read_binary<T>(file);
+      green[i] = binario::read_binary<T>(file);
+      blue[i] = binario::read_binary<T>(file);
     }
-}
+  }
 
-bool Photo::save(const std::string& filename) const {
+  bool savePhoto(const std::string& filename, const Photo& photo) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file: " << filename << '\n';
-        return false;
+      std::cerr << "Error opening file: " << filename << '\n';
+      return false;
     }
 
-    file << magicNumber << "\n" << width << " " << height << "\n" << maxColorValue << "\n";
+    file << photo.magicNumber << "\n" << photo.width << " " << photo.height << "\n" << photo.maxColorValue << "\n";
 
-    size_t const pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
-    if (maxColorValue <= MAX_COLOR_VALUE_8BIT) {
-        for (size_t i = 0; i < pixelCount; ++i) {
-            binario::write_birary(file, static_cast<unsigned char>(red[i]));
-            binario::write_birary(file, static_cast<unsigned char>(green[i]));
-            binario::write_birary(file, static_cast<unsigned char>(blue[i]));
-        }
+    size_t const pixelCount = static_cast<size_t>(photo.width) * static_cast<size_t>(photo.height);
+    if (photo.maxColorValue <= MAX_COLOR_VALUE_8BIT) {
+      for (size_t i = 0; i < pixelCount; ++i) {
+        binario::write_birary(file, static_cast<unsigned char>(photo.red[i]));
+        binario::write_birary(file, static_cast<unsigned char>(photo.green[i]));
+        binario::write_birary(file, static_cast<unsigned char>(photo.blue[i]));
+      }
     } else {
-        for (size_t i = 0; i < pixelCount; ++i) {
-            binario::write_birary(file, static_cast<unsigned short>(red[i]));
-            binario::write_birary(file, static_cast<unsigned short>(green[i]));
-            binario::write_birary(file, static_cast<unsigned short>(blue[i]));
-        }
+      for (size_t i = 0; i < pixelCount; ++i) {
+        binario::write_birary(file, static_cast<unsigned short>(photo.red[i]));
+        binario::write_birary(file, static_cast<unsigned short>(photo.green[i]));
+        binario::write_birary(file, static_cast<unsigned short>(photo.blue[i]));
+      }
     }
 
     return true;
-}
-
-void maxlevel(Photo& photo,unsigned int newMaxValue) {
-  double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
-  for (size_t i = 0; i < photo.red.size(); ++i) {
-    photo.red[i] = static_cast<unsigned int>(photo.red[i] * scaleFactor);
-    photo.green[i] = static_cast<unsigned int>(photo.green[i] * scaleFactor);
-    photo.blue[i] = static_cast<unsigned int>(photo.blue[i] * scaleFactor);
   }
-  photo.maxColorValue = newMaxValue;
-}
+
+  void maxlevel(Photo& photo, unsigned int newMaxValue) {
+    double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
+    for (size_t i = 0; i < photo.red.size(); ++i) {
+      photo.red[i] = static_cast<unsigned int>(photo.red[i] * scaleFactor);
+      photo.green[i] = static_cast<unsigned int>(photo.green[i] * scaleFactor);
+      photo.blue[i] = static_cast<unsigned int>(photo.blue[i] * scaleFactor);
+    }
+    photo.maxColorValue = newMaxValue;
+  }
 
   void handle_maxlevel_optionSOA(std::vector<std::string> const &args, const progargsCommon::parameters_files& params) {
-    size_t const size = 5;
-    if (args.size() != size) {
+    if (args.size() != 5) {
       std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 4 << '\n';
       return;
     }
@@ -377,14 +375,14 @@ void maxlevel(Photo& photo,unsigned int newMaxValue) {
       return;
     }
 
-    Photo image;
-    if (!image.load(params.input_file)) {
+    Photo photo;
+    if (!loadPhoto(params.input_file, photo)) {
       return;
     }
 
-    maxlevel(image,static_cast<unsigned int>(newMaxValue));
+    maxlevel(photo, static_cast<unsigned int>(newMaxValue));
 
-    if (!image.save(params.output_file)) {
+    if (!savePhoto(params.output_file, photo)) {
       return;
     }
 
