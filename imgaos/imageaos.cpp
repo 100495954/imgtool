@@ -289,82 +289,83 @@ void cutfreq(CutFreqParams& params) {
 
 
 
-bool Photo::load(const std::string& filename) {
+  bool loadPhoto(Photo& photo, const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file: " << filename << '\n';
-        return false;
+      std::cerr << "Error opening file: " << filename << '\n';
+      return false;
     }
 
-    if (!readHeader(file)) {
-        return false;
+    if (!readHeader(file, photo)) {
+      return false;
     }
 
-    pixels.resize(static_cast<unsigned long long>(width) * static_cast<unsigned long long>(height));
-    if (maxColorValue <= MAX_COLOR_VALUE) {
-        readPixels<unsigned char>(file);
+    photo.pixels.resize(static_cast<unsigned long long>(photo.width) * static_cast<unsigned long long>(photo.height));
+    if (photo.maxColorValue <= MAX_COLOR_VALUE) {
+      readPixels<unsigned char>(file, photo);
     } else {
-        readPixels<unsigned short>(file);
+      readPixels<unsigned short>(file, photo);
     }
 
     return true;
-}
+  }
 
-bool Photo::readHeader(std::ifstream& file) {
-    file >> magicNumber >> width >> height >> maxColorValue;
+  bool readHeader(std::ifstream& file, Photo& photo) {
+    file >> photo.magicNumber >> photo.width >> photo.height >> photo.maxColorValue;
     file.ignore(1); // Ignore the newline character after maxColorValue
 
-    if (magicNumber != "P6") {
-        std::cerr << "Error: Unsupported file format.\n";
-        return false;
+    if (photo.magicNumber != "P6") {
+      std::cerr << "Error: Unsupported file format.\n";
+      return false;
     }
     return true;
-}
+  }
 
-template<typename T>
-void Photo::readPixels(std::ifstream& file) {
-    for (auto& pixel : pixels) {
-        pixel.r = binario::read_binary<T>(file);
-        pixel.g = binario::read_binary<T>(file);
-        pixel.b = binario::read_binary<T>(file);
+  template<typename T>
+  void readPixels(std::ifstream& file, Photo& photo) {
+    for (auto& pixel : photo.pixels) {
+      pixel.r = binario::read_binary<T>(file);
+      pixel.g = binario::read_binary<T>(file);
+      pixel.b = binario::read_binary<T>(file);
     }
-}
+  }
 
-bool Photo::save(const std::string& filename) const {
+  bool savePhoto(const Photo& photo, const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file: " << filename << '\n';
-        return false;
+      std::cerr << "Error opening file: " << filename << '\n';
+      return false;
     }
 
-    file << magicNumber << "\n" << width << " " << height << "\n" << maxColorValue << "\n";
+    file << photo.magicNumber << "\n" << photo.width << " " << photo.height << "\n" << photo.maxColorValue << "\n";
 
-    if (maxColorValue <= MAX_COLOR_VALUE) {
-        for (const auto& pixel : pixels) {
-            binario::write_birary(file, static_cast<unsigned char>(pixel.r));
-            binario::write_birary(file, static_cast<unsigned char>(pixel.g));
-            binario::write_birary(file, static_cast<unsigned char>(pixel.b));
-        }
+    if (photo.maxColorValue <= MAX_COLOR_VALUE) {
+      for (const auto& pixel : photo.pixels) {
+        binario::write_birary(file, static_cast<unsigned char>(pixel.r));
+        binario::write_birary(file, static_cast<unsigned char>(pixel.g));
+        binario::write_birary(file, static_cast<unsigned char>(pixel.b));
+      }
     } else {
-        for (const auto& pixel : pixels) {
-            binario::write_birary(file, static_cast<unsigned short>(pixel.r));
-            binario::write_birary(file, static_cast<unsigned short>(pixel.g));
-            binario::write_birary(file, static_cast<unsigned short>(pixel.b));
-        }
+      for (const auto& pixel : photo.pixels) {
+        binario::write_birary(file, static_cast<unsigned short>(pixel.r));
+        binario::write_birary(file, static_cast<unsigned short>(pixel.g));
+        binario::write_birary(file, static_cast<unsigned short>(pixel.b));
+      }
     }
 
     return true;
-}
-
-void maxlevel(Photo& photo, unsigned int newMaxValue) {
-  double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
-  for (auto& pixel : photo.pixels) {
-    pixel.r = static_cast<int>(pixel.r * scaleFactor);
-    pixel.g = static_cast<int>(pixel.g * scaleFactor);
-    pixel.b = static_cast<int>(pixel.b * scaleFactor);
   }
-  photo.maxColorValue = newMaxValue;
-}
+
+  void maxlevel(Photo& photo, unsigned int newMaxValue) {
+    double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
+    for (auto& pixel : photo.pixels) {
+      pixel.r = static_cast<int>(pixel.r * scaleFactor);
+      pixel.g = static_cast<int>(pixel.g * scaleFactor);
+      pixel.b = static_cast<int>(pixel.b * scaleFactor);
+    }
+    photo.maxColorValue = newMaxValue;
+  }
+
 
   bool loadPPM(std::string const & filename, std::vector<std::vector<Pixel>> & image) {
     std::ifstream file(filename, std::ios::binary);
@@ -504,7 +505,6 @@ void maxlevel(Photo& photo, unsigned int newMaxValue) {
   }
 
   void handle_maxlevel_optionAOS(std::vector<std::string> const &args, const progargsCommon::parameters_files& params) {
-
     int newMaxValue = 0;
     try {
       newMaxValue = std::stoi(args[4]);
@@ -519,13 +519,13 @@ void maxlevel(Photo& photo, unsigned int newMaxValue) {
     }
 
     Photo image;
-    if (!image.load(params.input_file)) {
+    if (!loadPhoto(image, params.input_file)) {
       return;
     }
 
-    maxlevel(image,static_cast<unsigned int>(newMaxValue));
+    maxlevel(image, static_cast<unsigned int>(newMaxValue));
 
-    if (!image.save(params.output_file)) {
+    if (!savePhoto(image, params.output_file)) {
       return;
     }
 
@@ -533,17 +533,26 @@ void maxlevel(Photo& photo, unsigned int newMaxValue) {
   }
 
   void process_parametersAOS(std::vector<std::string> const &args) {
-    if (args.size() < 4) {
-      std::cerr << "Usage: <input_file> <output_file> <option> [<value>]\n";
-      return;
+    if (args.size() != 5) {
+      std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 3 << "\n";
+      exit(-1);
+    }
+
+    int newMaxValue = 0;
+    try {
+      newMaxValue = std::stoi(args[4]);
+    } catch (const std::invalid_argument&) {
+      std::cerr << "Error: Invalid maxlevel: " << args[4] << "\n";
+      exit(-1);
+    }
+
+    if (newMaxValue < 0 || newMaxValue > 65535) {
+      std::cerr << "Error: Invalid maxlevel: " << newMaxValue << "\n";
+      exit(-1);
     }
 
     progargsCommon::parameters_files const params{.input_file=args[1], .output_file=args[2]};
-    const std::string& option = args[3];
-
-    if (option == "maxlevel") {
-      handle_maxlevel_optionAOS(args, params);
-    }
+    handle_maxlevel_optionAOS(args, params);
   }
 
   void callCutfreq(std::vector<std::string> const &args) {

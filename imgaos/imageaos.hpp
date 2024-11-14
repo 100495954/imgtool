@@ -48,21 +48,18 @@ namespace imgaos{
 
   class Photo {
     public:
-    bool load(const std::string& filename);
-    [[nodiscard]] bool save(const std::string& filename) const;
     std::string magicNumber;
     int width = 0;
     int height = 0;
     unsigned int maxColorValue = 0;
     std::vector<Pixel> pixels;
+    };
 
-    private:
-    bool readHeader(std::ifstream& file);
-    template<typename T>
-    void readPixels(std::ifstream& file);
-
-
-  };
+  bool loadPhoto(Photo& photo, const std::string& filename);
+  bool savePhoto(const Photo& photo, const std::string& filename);
+  bool readHeader(std::ifstream& file, Photo& photo);
+  template<typename T>
+  void readPixels(std::ifstream& file, Photo& photo);
 
   void maxlevel(Photo& photo, unsigned int newMaxValue);
 
