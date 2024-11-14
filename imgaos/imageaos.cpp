@@ -112,13 +112,13 @@ namespace imgaos {
 
     for(std::size_t i = 0; i < picture.pixels.size(); i++) {
       if (picture.max_color <= color_frontera) {
-        picture.pixels[i].r = static_cast<int>(binario::read_binary<u_int8_t>(input));
-        picture.pixels[i].g = static_cast<int>(binario::read_binary<u_int8_t>(input));
-        picture.pixels[i].b = static_cast<int>(binario::read_binary<u_int8_t>(input));
+        picture.pixels[i].r = static_cast<int>(binario::read_binary<uint8_t>(input));
+        picture.pixels[i].g = static_cast<int>(binario::read_binary<uint8_t>(input));
+        picture.pixels[i].b = static_cast<int>(binario::read_binary<uint8_t>(input));
       } else {
-        picture.pixels[i].r = static_cast<int>(binario::read_binary<u_int16_t>(input));
-        picture.pixels[i].g = static_cast<int>(binario::read_binary<u_int16_t>(input));
-        picture.pixels[i].b = static_cast<int>(binario::read_binary<u_int16_t>(input));
+        picture.pixels[i].r = static_cast<int>(binario::read_binary<uint16_t>(input));
+        picture.pixels[i].g = static_cast<int>(binario::read_binary<uint16_t>(input));
+        picture.pixels[i].b = static_cast<int>(binario::read_binary<uint16_t>(input));
       }
     }
 
@@ -356,14 +356,14 @@ bool Photo::save(const std::string& filename) const {
     return true;
 }
 
-void Photo::maxlevel(unsigned int newMaxValue) {
-  double const scaleFactor = static_cast<double>(newMaxValue) / maxColorValue;
-  for (auto& pixel : pixels) {
+void maxlevel(Photo& photo, unsigned int newMaxValue) {
+  double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
+  for (auto& pixel : photo.pixels) {
     pixel.r = static_cast<int>(pixel.r * scaleFactor);
     pixel.g = static_cast<int>(pixel.g * scaleFactor);
     pixel.b = static_cast<int>(pixel.b * scaleFactor);
   }
-  maxColorValue = newMaxValue;
+  photo.maxColorValue = newMaxValue;
 }
 
   bool loadPPM(std::string const & filename, std::vector<std::vector<Pixel>> & image) {
@@ -504,11 +504,6 @@ void Photo::maxlevel(unsigned int newMaxValue) {
   }
 
   void handle_maxlevel_optionAOS(std::vector<std::string> const &args, const progargsCommon::parameters_files& params) {
-    size_t const size = 0;
-    if (args.size() != size) {
-      std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 4 << '\n';
-      return;
-    }
 
     int newMaxValue = 0;
     try {
@@ -528,7 +523,7 @@ void Photo::maxlevel(unsigned int newMaxValue) {
       return;
     }
 
-    image.maxlevel(static_cast<unsigned int>(newMaxValue));
+    maxlevel(image,static_cast<unsigned int>(newMaxValue));
 
     if (!image.save(params.output_file)) {
       return;

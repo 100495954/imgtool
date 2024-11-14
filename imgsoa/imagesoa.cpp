@@ -347,14 +347,14 @@ bool Photo::save(const std::string& filename) const {
     return true;
 }
 
-void Photo::maxlevel(unsigned int newMaxValue) {
-  double const scaleFactor = static_cast<double>(newMaxValue) / maxColorValue;
-  for (size_t i = 0; i < red.size(); ++i) {
-    red[i] = static_cast<unsigned int>(red[i] * scaleFactor);
-    green[i] = static_cast<unsigned int>(green[i] * scaleFactor);
-    blue[i] = static_cast<unsigned int>(blue[i] * scaleFactor);
+void maxlevel(Photo& photo,unsigned int newMaxValue) {
+  double const scaleFactor = static_cast<double>(newMaxValue) / photo.maxColorValue;
+  for (size_t i = 0; i < photo.red.size(); ++i) {
+    photo.red[i] = static_cast<unsigned int>(photo.red[i] * scaleFactor);
+    photo.green[i] = static_cast<unsigned int>(photo.green[i] * scaleFactor);
+    photo.blue[i] = static_cast<unsigned int>(photo.blue[i] * scaleFactor);
   }
-  maxColorValue = newMaxValue;
+  photo.maxColorValue = newMaxValue;
 }
 
   void handle_maxlevel_optionSOA(std::vector<std::string> const &args, const progargsCommon::parameters_files& params) {
@@ -382,7 +382,7 @@ void Photo::maxlevel(unsigned int newMaxValue) {
       return;
     }
 
-    image.maxlevel(static_cast<unsigned int>(newMaxValue));
+    maxlevel(image,static_cast<unsigned int>(newMaxValue));
 
     if (!image.save(params.output_file)) {
       return;

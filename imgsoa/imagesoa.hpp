@@ -73,15 +73,8 @@ namespace imgsoa {
   };
   class Photo {
     public:
-    Photo() = default;
     bool load(const std::string& filename);
     [[nodiscard]] bool save(const std::string& filename) const;
-    void maxlevel(unsigned int newMaxValue);
-
-    private:
-    bool readHeader(std::ifstream& file);
-    template<typename T>
-    void readPixels(std::ifstream& file, size_t pixelCount);
 
     std::string magicNumber;
     int width = 0;
@@ -90,8 +83,16 @@ namespace imgsoa {
     std::vector<unsigned int> red;
     std::vector<unsigned int> green;
     std::vector<unsigned int> blue;
+
+    private:
+    bool readHeader(std::ifstream& file);
+    template<typename T>
+    void readPixels(std::ifstream& file, size_t pixelCount);
+
+
   };
 
+  void maxlevel(Photo& photo, unsigned int newMaxValue);
 
   void compress(progargsCommon::parameters_files params);
 

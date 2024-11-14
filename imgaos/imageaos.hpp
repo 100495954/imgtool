@@ -48,22 +48,23 @@ namespace imgaos{
 
   class Photo {
     public:
-    Photo() = default;
     bool load(const std::string& filename);
     [[nodiscard]] bool save(const std::string& filename) const;
-    void maxlevel(unsigned int newMaxValue);
+    std::string magicNumber;
+    int width = 0;
+    int height = 0;
+    unsigned int maxColorValue = 0;
+    std::vector<Pixel> pixels;
 
     private:
     bool readHeader(std::ifstream& file);
     template<typename T>
     void readPixels(std::ifstream& file);
 
-    std::string magicNumber;
-    int width = 0;
-    int height = 0;
-    unsigned int maxColorValue = 0;
-    std::vector<Pixel> pixels;
+
   };
+
+  void maxlevel(Photo& photo, unsigned int newMaxValue);
 
   // Función para comprimir una imagen
   void compress(progargsCommon::parameters_files & params);
