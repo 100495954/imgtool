@@ -19,7 +19,13 @@ namespace common {
     int width     = 0;
     int height    = 0;
     int max_color = 0;
-    imagen >> identification >> width >> height >> max_color;
+
+      imagen >> identification;
+      if (identification != "P6") {
+          std::cerr << "Invalid PPM format\n";
+          return;
+      }
+    imagen >> width >> height >> max_color;
 
     std::cout << "Input: "<< params.input_file <<'\n'<<"Output: "<<params.output_file<<'\n'<<"Operation: info"<<"\n";
     std::cout <<"Image size: "<<width<<"x"<<height<<"\n"<<"Max level: "<<max_color;
