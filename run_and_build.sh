@@ -76,3 +76,5 @@ cmake --build build-release
 #perf stat -a -e power/energy-pkg/ ./build-release/imtool-soa/imtool-soa ./input/deer-small.ppm ./output/info-deer-small-soa.ppm info
 #perf stat -a -e power/energy-pkg/ ./build-release/imtool-soa/imtool-soa ./input/deer-large.ppm ./output/info-deer-large-soa.ppm info
 #perf stat -a -e power/energy-pkg/ ./build-release/imtool-soa/imtool-soa ./input/sabatini.ppm ./output/info-sabatini-soa.ppm info
+
+##
