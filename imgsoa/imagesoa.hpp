@@ -87,7 +87,7 @@ namespace imgsoa {
   bool savePhoto(const std::string& filename, const Photo& photo);
   bool readHeader(std::ifstream& file, Photo& photo);
   template<typename T>
-  void readPixels(std::ifstream& file, size_t pixelCount, std::vector<unsigned int>& red, std::vector<unsigned int>& green, std::vector<unsigned int>& blue);
+  void readPixels(std::ifstream& file, size_t pixelCount, Photo &photo);
 
 
   void maxlevel(Photo& photo, unsigned int newMaxValue);

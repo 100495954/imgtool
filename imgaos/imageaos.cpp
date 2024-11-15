@@ -106,6 +106,7 @@ namespace imgaos {
     input.get();
     if (strcmp(identification.c_str(), "P6")!=0) {
       std::cerr << "Invalid file type, the file:"<<params.input_file << " must be in PPM format\n";
+      return;
     }
     Image picture({.width=width, .height=height}, max_color);
     int const color_frontera = 255;

@@ -1,19 +1,21 @@
 #include "imgsoa/imagesoa.hpp"
 
 #include "common/binario.hpp"
-#include <cmath>
+
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <limits>
-#include <unordered_map>
-#include <unordered_set>
-#include <stdexcept>
+#include <cstring>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace imgsoa {
@@ -135,6 +137,10 @@ namespace imgsoa {
     int max_color = 0;
     input >> idn >> width >> height >> max_color;
     input.get();
+    if (strcmp(idn.c_str(), "P6")!=0) {
+      std::cerr << "Invalid file type, the file:"<<params.input_file << " must be in PPM format\n";
+      return;
+    }
     image_size const size_init(width, height);
 
     Image image(size_init, max_color);
@@ -291,9 +297,9 @@ Picture resizeImage(Picture const & original, int newWidth, int newHeight) {
     photo.blue.resize(pixelCount);
 
     if (photo.maxColorValue <= MAX_COLOR_VALUE_8BIT) {
-      readPixels<unsigned char>(file, pixelCount, photo.red, photo.green, photo.blue);
+      readPixels<unsigned char>(file, pixelCount, photo);
     } else {
-      readPixels<unsigned short>(file, pixelCount, photo.red, photo.green, photo.blue);
+      readPixels<unsigned short>(file, pixelCount, photo);
     }
 
     return true;
@@ -311,11 +317,11 @@ Picture resizeImage(Picture const & original, int newWidth, int newHeight) {
   }
 
   template<typename T>
-  void readPixels(std::ifstream& file, size_t pixelCount, std::vector<unsigned int>& red, std::vector<unsigned int>& green, std::vector<unsigned int>& blue) {
+  void readPixels(std::ifstream& file, size_t pixelCount, Photo &photo) {
     for (size_t i = 0; i < pixelCount; ++i) {
-      red[i] = binario::read_binary<T>(file);
-      green[i] = binario::read_binary<T>(file);
-      blue[i] = binario::read_binary<T>(file);
+      photo.red[i] = binario::read_binary<T>(file);
+      photo.green[i] = binario::read_binary<T>(file);
+      photo.blue[i] = binario::read_binary<T>(file);
     }
   }
 
