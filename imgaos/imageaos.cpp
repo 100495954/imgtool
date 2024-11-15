@@ -47,7 +47,7 @@ namespace imgaos {
   void write_dataCPPM(Image & picture, std::map<Pixel, uint32_t> & colorlist,std::string const & output_file){
     std::ofstream file(output_file, std::ios::binary);
     if (!file.is_open()) {
-      std::cerr << "Error opening output file: " << output_file << "\n";
+      std::cerr << "Error al abrir el fichero " << output_file << "\n";
       return;
     }
     file << "C6"<< " " << picture.size.width << " " << picture.size.height << " " << picture.max_color << " "<< picture.colors << "\n";
@@ -86,7 +86,7 @@ namespace imgaos {
     std::ifstream input(params.input_file, std::ios::binary);
 
     if (input.fail()) {
-      std::cerr << "Error opening file " << params.input_file << '\n';
+      std::cerr << "Error al abrir el fichero " << params.input_file << '\n';
       return;
     }
 
@@ -249,7 +249,7 @@ Pixel findClosestColorOptimized(const Pixel& color, const std::unordered_map<int
 // Función principal para eliminar los colores menos frecuentes de la imagen
 void cutfreq(CutFreqParams& params) {
   if (params.n < 1) {
-    throw std::invalid_argument("Error: Invalid cutfreq: " + std::to_string(params.n));
+    throw std::invalid_argument("Error: cutfreq no valido: " + std::to_string(params.n));
   }
 
   auto frequencyMap = countColorFrequencyWithParams(params);
@@ -285,7 +285,7 @@ void cutfreq(CutFreqParams& params) {
   bool loadPhoto(Photo& photo, const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-      std::cerr << "Error opening file: " << filename << '\n';
+      std::cerr << "Error al abrir el fichero " << filename << '\n';
       return false;
     }
 
@@ -308,7 +308,7 @@ void cutfreq(CutFreqParams& params) {
     file.ignore(1); // Ignore the newline character after maxColorValue
 
     if (photo.magicNumber != "P6") {
-      std::cerr << "Error: Unsupported file format.\n";
+      std::cerr << "Error: formato de imagen no valido.\n";
       return false;
     }
     return true;
@@ -326,7 +326,7 @@ void cutfreq(CutFreqParams& params) {
   bool savePhoto(const Photo& photo, const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-      std::cerr << "Error opening file: " << filename << '\n';
+      std::cerr << "Error al abrir el fichero " << filename << '\n';
       return false;
     }
 
@@ -363,7 +363,7 @@ void cutfreq(CutFreqParams& params) {
   bool loadPPM(std::string const & filename, std::vector<std::vector<Pixel>> & image) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-      std::cerr << "Error: Unable to open file " << filename << "\n";
+      std::cerr << "Error al abrir el fichero " << filename << "\n";
       return false;
     }
 
@@ -371,7 +371,7 @@ void cutfreq(CutFreqParams& params) {
     std::string header;
     file >> header;
     if (header != "P6") {
-      std::cerr << "Error: Unsupported PPM format (" << header << ")\n";
+      std::cerr << "Error: formato de imagen erroneo (" << header << ")\n";
       return false;
     }
 
@@ -381,7 +381,7 @@ void cutfreq(CutFreqParams& params) {
     file >> width >> height >> maxColorValue;
     file.ignore(kMaxLineLength, '\n');      // Skip to the end of the line
     if (maxColorValue != kMaxColorValue) {  // Ensure max color value is 255 for 8-bit images
-      std::cerr << "Error: Unsupported max color value (" << maxColorValue << ")\n";
+      std::cerr << "Error: Valor maximo no soportado (" << maxColorValue << ")\n";
       return false;
     }
 
@@ -404,7 +404,7 @@ void cutfreq(CutFreqParams& params) {
   bool savePPM(std::string const & filename, std::vector<std::vector<Pixel>> const & image) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-      std::cerr << "Error: Unable to open file " << filename << " for writing.\n";
+      std::cerr << "Error al abrir el fichero " << filename << " para escritura.\n";
       return false;
     }
 
@@ -437,9 +437,6 @@ void cutfreq(CutFreqParams& params) {
     int yl_           = std::max(0, static_cast<int>(std::floor(ycoord)));
     int const yh_     = std::min(height_ - 1, static_cast<int>(std::ceil(ycoord)));
 
-    /*std::cout << "Bilinear Interpolation - xcoord: " << xcoord << ", ycoord: " << ycoord
-              << ", xl: " << xl_ << ", xh: " << xh_ << ", yl: " << yl_ << ", yh: " << yh_ << "\n";*/
-
     // Obtener los cuatro píxeles vecinos
     Pixel const & p1_ = original[static_cast<unsigned long>(yl_)][static_cast<unsigned long>(xl_)];
     Pixel const & p2_ = original[static_cast<unsigned long>(yl_)][static_cast<unsigned long>(xh_)];
@@ -460,10 +457,6 @@ void cutfreq(CutFreqParams& params) {
     Pixel result{.r = interpolate(p1_.r, p2_.r, p3_.r, p4_.r),
                  .g = interpolate(p1_.g, p2_.g, p3_.g, p4_.g),
                  .b = interpolate(p1_.b, p2_.b, p3_.b, p4_.b)};
-
-    // AÑADIDO PARA TESTEO
-    /*std::cout << "Interpolated Pixel - R: " << result.r << ", G: " << result.g
-              << ", B: " << result.b << "\n";*/
     return result;
   }
 
@@ -487,9 +480,6 @@ void cutfreq(CutFreqParams& params) {
                                                           static_cast<double>(newHeight - 1));
         // Se obtiene el valor del píxel interpolado y se asigna a la posición actual de la imagen
         // redimensionada.
-        // AÑADIDI PARA TESTEO
-        /*std::cout << "Nuevo píxel en (" << x_ << ", " << y_ << ") -> Coordenadas originales: ("
-                  << originalX << ", " << originalY << ")\n";*/
         // Obtener el píxel interpolado y asignarlo a la imagen redimensionada
         resized[y_][x_] = bilinearInterpolate(original, originalX, originalY);
       }
@@ -502,12 +492,12 @@ void cutfreq(CutFreqParams& params) {
     try {
       newMaxValue = std::stoi(args[4]);
     } catch (const std::invalid_argument&) {
-      std::cerr << "Error: The fourth argument must be an integer.\n";
+      std::cerr << "Error: El cuarto argumento debe ser entero.\n";
       return;
     }
 
     if (newMaxValue < 0 || newMaxValue > progargsCommon::MAX_COLOR_VALUE_16BIT) {
-      std::cerr << "Error: The new max value must be between 0 and " << progargsCommon::MAX_COLOR_VALUE_16BIT << ".\n";
+      std::cerr << "Error: nuevo valor maximo entre 0 y " << progargsCommon::MAX_COLOR_VALUE_16BIT << ".\n";
       return;
     }
 
@@ -522,26 +512,20 @@ void cutfreq(CutFreqParams& params) {
       return;
     }
 
-    std::cout << "Image processing completed successfully.\n";
+    std::cout << "Imagen procesada con exito\n";
   }
 
   void process_parametersAOS(std::vector<std::string> const &args) {
-      size_t const size =5;
-    if (args.size() != size) {
-      std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 3 << "\n";
-      exit(-1);
-    }
-
     int newMaxValue = 0;
     try {
       newMaxValue = std::stoi(args[4]);
     } catch (const std::invalid_argument&) {
-      std::cerr << "Error: Invalid maxlevel: " << args[4] << "\n";
+      std::cerr << "Error: Maxlevel invalido: " << args[4] << "\n";
       exit(-1);
     }
 
     if (newMaxValue < 0 || newMaxValue > MAX_COLOR_VALUE_EXTENDED) {
-      std::cerr << "Error: Invalid maxlevel: " << newMaxValue << "\n";
+      std::cerr << "Error: Maxlevel invalido: " << newMaxValue << "\n";
       exit(-1);
     }
 

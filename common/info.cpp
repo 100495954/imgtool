@@ -1,7 +1,3 @@
-//
-// Created by pablo on 28/10/24.
-//
-
 #include "common/info.hpp"
 
 #include <fstream>

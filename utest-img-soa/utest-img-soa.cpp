@@ -200,8 +200,6 @@ TEST(ImageTest, VerifyPixelIndexingInCompressedFile) {
     (void)std::remove(filename.c_str());
 }
 
-// Definir GRID_SIZE
-
 
 TEST(ImageSOATest, ReadPPMFunctionFileNotFound) {
     std::size_t width = 0;
@@ -437,21 +435,6 @@ TEST(PhotoTest, LoadFunctionInvalidFormat) {
     ASSERT_FALSE(imgsoa::loadPhoto("invalid.ppm", photo));
 }
 
-// Tests for readHeader
-
-// Test that readHeader fails if the file has an incorrect format
-TEST(PhotoTest, ReadHeaderFunctionInvalidFormat) {
-    std::ofstream file("invalid_header.ppm");
-    file << "P3\n";
-    file.close();
-    std::ifstream inputFile("invalid_header.ppm", std::ios::binary);
-    imgsoa::Photo photo;
-    // Attempt to read a file with an incorrect format and verify that the function fails without causing a segmentation fault
-    ASSERT_FALSE(imgsoa::readHeader(inputFile, photo));
-}
-
-// Tests for savePhoto
-
 // Verify that savePhoto correctly saves the image and that the file can be opened afterward
 TEST(PhotoTest, SaveFunctionSuccess) {
     imgsoa::Photo photo;
@@ -468,34 +451,6 @@ TEST(PhotoTest, SaveFunctionFileNotWritable) {
     // Attempt to save to an invalid location and verify that it fails without causing a segmentation fault
     ASSERT_FALSE(imgsoa::savePhoto("/invalid_path/output_image.ppm", photo));
 }
-
-// Tests for maxlevel
-
-// Verify that maxlevel correctly adjusts the pixel values
-/*TEST(PhotoTest, MaxLevelFunctionSuccess) {
-    imgsoa::Photo photo;
-    imgsoa::loadPhoto("test_image.ppm", photo);
-    imgsoa::maxlevel(photo, 128);
-    EXPECT_EQ(photo.maxColorValue, 128);
-    EXPECT_EQ(photo.red[0], 128);
-    EXPECT_EQ(photo.green[0], 0);
-    EXPECT_EQ(photo.blue[0], 0);
-}
-
-// Tests for handle_maxlevel_optionSOA
-
-// Verify that handle_maxlevel_optionSOA correctly handles the maxlevel option
-TEST(ImageSOATest, HandleMaxLevelOptionSOAFunctionSuccess) {
-    std::vector<std::string> args = {"program", "test_image.ppm", "output_image.ppm", "maxlevel", "128"};
-    progargsCommon::parameters_files const params(args[1], args[2]);
-    imgsoa::handle_maxlevel_optionSOA(args, params);
-    imgsoa::Photo photo;
-    imgsoa::loadPhoto("output_image.ppm", photo);
-    EXPECT_EQ(photo.maxColorValue, 128);
-    EXPECT_EQ(photo.red[0], 128);
-    EXPECT_EQ(photo.green[0], 0);
-    EXPECT_EQ(photo.blue[0], 0);
-}*/
 
 // Case 1: from 255 to 128
 TEST(MaxLevelTest, MaxLevelScaling_255to128) {

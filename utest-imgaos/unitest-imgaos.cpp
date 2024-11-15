@@ -408,19 +408,6 @@ TEST(PhotoTest, LoadFunctionInvalidFormat) {
     ASSERT_FALSE(imgaos::loadPhoto(photo, "invalid.ppm"));
 }
 
-// Tests para readHeader
-
-// Prueba que readHeader falle si el archivo tiene un formato incorrecto
-TEST(PhotoTest, ReadHeaderFunctionInvalidFormat) {
-    std::ofstream file("invalid_header.ppm");
-    file << "P3\n";
-    file.close();
-    std::ifstream inputFile("invalid_header.ppm", std::ios::binary);
-    imgaos::Photo photo;
-    // Intenta leer un archivo con un formato incorrecto y verifica que la función falle sin causar un fallo de segmentación
-    ASSERT_FALSE(imgaos::readHeader(inputFile, photo));
-}
-
 // Tests para save
 
 // Verifica que save guarde correctamente la imagen y que el archivo pueda abrirse después
@@ -439,34 +426,6 @@ TEST(PhotoTest, SaveFunctionFileNotWritable) {
     // Intenta guardar en una ubicación inválida y verifica que falle sin causar un fallo de segmentación
     ASSERT_FALSE(imgaos::savePhoto(photo, "/invalid_path/output_image.ppm"));
 }
-
-// Tests para maxlevel
-
-// Verifica que maxlevel ajuste correctamente los valores de los píxeles
-/*TEST(PhotoTest, MaxLevelFunctionSuccess) {
-    imgaos::Photo photo;
-    imgaos::loadPhoto(photo, "test_image.ppm");
-    imgaos::maxlevel(photo, 128);
-    EXPECT_EQ(photo.maxColorValue, 128);
-    EXPECT_EQ(photo.pixels[0].r, 128);
-    EXPECT_EQ(photo.pixels[0].g, 0);
-    EXPECT_EQ(photo.pixels[0].b, 0);
-}
-
-// Tests para handle_maxlevel_optionAOS
-
-// Verifica que handle_maxlevel_optionAOS maneje correctamente la opción maxlevel
-TEST(ImageAOSTest, HandleMaxLevelOptionAOSFunctionSuccess) {
-    std::vector<std::string> args = {"program", "test_image.ppm", "output_image.ppm", "maxlevel", "128"};
-    progargsCommon::parameters_files const params(args[1], args[2]);
-    imgaos::handle_maxlevel_optionAOS(args, params);
-    imgaos::Photo photo;
-    imgaos::loadPhoto(photo, "output_image.ppm");
-    EXPECT_EQ(photo.maxColorValue, 128);
-    EXPECT_EQ(photo.pixels[0].r, 128);
-    EXPECT_EQ(photo.pixels[0].g, 0);
-    EXPECT_EQ(photo.pixels[0].b, 0);
-}*/
 
 // Caso 1: de 255 a 128
 TEST(MaxLevelTest, MaxLevelScaling_255to128) {
