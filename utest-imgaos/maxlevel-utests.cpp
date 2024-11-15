@@ -76,7 +76,7 @@ TEST(PhotoTest, MaxLevelFunctionSuccess) {
 // Verifica que handle_maxlevel_optionAOS maneje correctamente la opción maxlevel
 TEST(ImageAOSTest, HandleMaxLevelOptionAOSFunctionSuccess) {
     std::vector<std::string> args = {"program", "test_image.ppm", "output_image.ppm", "maxlevel", "128"};
-    progargsCommon::parameters_files params(args[1], args[2]);
+    progargsCommon::parameters_files const params(args[1], args[2]);
     imgaos::handle_maxlevel_optionAOS(args, params);
     imgaos::Photo photo;
     imgaos::loadPhoto(photo, "output_image.ppm");
@@ -199,7 +199,7 @@ TEST(MaxLevelTest, ScaleFrom65535to255) {
 // NOLINTEND(readability-magic-numbers)
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers)
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+//int main(int argc, char **argv) {
+    //::testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
+//}

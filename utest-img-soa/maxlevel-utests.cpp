@@ -44,7 +44,7 @@ TEST(PhotoTest, ReadHeaderFunctionInvalidFormat) {
 
 // Tests for savePhoto
 
-// Verify that savePhoto correctly saves the image and that the file can be opened afterwards
+// Verify that savePhoto correctly saves the image and that the file can be opened afterward
 TEST(PhotoTest, SaveFunctionSuccess) {
     imgsoa::Photo photo;
     imgsoa::loadPhoto("test_image.ppm", photo);
@@ -209,7 +209,7 @@ TEST(MaxLevelTest, ScaleFrom65535to255) {
 // NOLINTEND(readability-magic-numbers)
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers)
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+//int main(int argc, char **argv) {
+    //::testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
+//}
