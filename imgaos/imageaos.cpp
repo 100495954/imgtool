@@ -1,5 +1,4 @@
 #include "imgaos/imageaos.hpp"
-#include "imgsoa/imagesoa.hpp"
 #include "common/binario.hpp"
 #include "common/progargs.hpp"
 
@@ -18,13 +17,6 @@
 #include <vector>
 #include <ranges>
 
-constexpr int MAX_COLOR_VALUE = 255;
-// Constante para el valor máximo de color extendido
-constexpr int MAX_COLOR_VALUE_EXTENDED = 65535;
-// Constantes para el grid
-constexpr int GRID_SIZE = 8;
-constexpr int RED_MULTIPLIER = 10000;
-constexpr int GREEN_MULTIPLIER = 100;
 
 namespace imgaos {
 
@@ -534,7 +526,8 @@ void cutfreq(CutFreqParams& params) {
   }
 
   void process_parametersAOS(std::vector<std::string> const &args) {
-    if (args.size() != 5) {
+      size_t const size =5;
+    if (args.size() != size) {
       std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 3 << "\n";
       exit(-1);
     }
@@ -547,7 +540,7 @@ void cutfreq(CutFreqParams& params) {
       exit(-1);
     }
 
-    if (newMaxValue < 0 || newMaxValue > 65535) {
+    if (newMaxValue < 0 || newMaxValue > MAX_COLOR_VALUE_EXTENDED) {
       std::cerr << "Error: Invalid maxlevel: " << newMaxValue << "\n";
       exit(-1);
     }

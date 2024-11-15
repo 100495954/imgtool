@@ -48,14 +48,7 @@ namespace imgsoa {
     return color_map;
   }
 
-  void print_color_table(std::map<std::tuple<uint16_t, uint16_t, uint16_t>, uint32_t>& color_list) {
-    for (const auto & [color, index] : color_list) {
-      std::cout << index<<"\n";
-      std::cout<<"red: " << std::get<0>(color) << '\n';
-      std::cout<<"green: " << std::get<1>(color) << '\n';
-      std::cout<<"blue: " << std::get<2>(color) << '\n';
-    }
-  }
+
 
   void write_color_table(Image & image,
                   std::map<std::tuple<uint16_t, uint16_t, uint16_t>, uint32_t> & color_list,
@@ -125,12 +118,10 @@ namespace imgsoa {
   void compress(progargsCommon::parameters_files params) {
     std::ifstream input(params.input_file, std::ios::binary);
     std::ofstream output(params.output_file, std::ios::binary);
-
     if (input.fail()) {
       std::cerr << "Error opening file " << params.input_file << '\n';
       return;
     }
-
     std::string idn;
     int width = 0;
     int height = 0;
@@ -142,10 +133,8 @@ namespace imgsoa {
       return;
     }
     image_size const size_init(width, height);
-
     Image image(size_init, max_color);
     int const limit = 255;
-
     for(std::size_t i = 0; i < image.red.size(); i++) {
       if (image.max_color <= limit) {
         image.red[i] = binario::read_binary<uint8_t>(input);
@@ -157,12 +146,8 @@ namespace imgsoa {
         image.blue[i] = binario::read_binary<uint16_t>(input);
       }
     }
-
     std::map<std::tuple<uint16_t, uint16_t, uint16_t>, uint32_t> color_list = getColors(image);
     output<< "C6"<< " " << image.size.width << " " << image.size.height << " " << image.max_color << " "<< image.n_colors << "\n";
-
-    print_color_table(color_list);
-
     write_color_table(image, color_list, params.output_file);
     write_pixels(image, color_list, params.output_file);
   }
@@ -363,7 +348,8 @@ Picture resizeImage(Picture const & original, int newWidth, int newHeight) {
   }
 
   void handle_maxlevel_optionSOA(std::vector<std::string> const &args, const progargsCommon::parameters_files& params) {
-    if (args.size() != 5) {
+        size_t const size =5;
+      if (args.size() != size) {
       std::cerr << "Error: Invalid number of extra arguments for maxlevel: " << args.size() - 4 << '\n';
       return;
     }
