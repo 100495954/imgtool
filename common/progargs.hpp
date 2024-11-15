@@ -11,6 +11,10 @@ namespace progargsCommon {
     std::string input_file;
     std::string output_file;
   };
+
+  bool check_argc(int &argc);
+  bool args_checker(std::vector<std::string> const &args);
+  bool pertenencia(std::string operation);
 }
 
 #endif
