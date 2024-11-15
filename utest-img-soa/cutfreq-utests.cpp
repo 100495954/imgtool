@@ -1,12 +1,58 @@
 #include <gtest/gtest.h>
 #include "imgsoa/imagesoa.hpp"
 #include <unordered_map>
+#include <fstream>
 
 // Definir GRID_SIZE
 static constexpr int GRID_SIZE = 8;
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers)
 // NOLINTBEGIN(readability-magic-numbers)
+
+// Tests for readPPM
+
+// Test that readPPM fails if the file does not exist
+TEST(ImageSOATest, ReadPPMFunctionFileNotFound) {
+    std::size_t width = 0;
+    std::size_t height = 0;
+    ASSERT_THROW(imgsoa::readPPM("nonexistent.ppm", width, height), std::runtime_error);
+}
+
+// Test that readPPM fails if the file has an invalid format
+TEST(ImageSOATest, ReadPPMFunctionInvalidFormat) {
+    std::ofstream file("invalid.ppm");
+    file << "P3\n";
+    file.close();
+    std::size_t width = 0;
+    std::size_t height = 0;
+    ASSERT_THROW(imgsoa::readPPM("invalid.ppm", width, height), std::runtime_error);
+}
+
+// Tests for writePPM
+
+// Test that writePPM successfully writes the image and the file can be opened afterward
+TEST(ImageSOATest, WritePPMFunctionSuccess) {
+    imgsoa::ImageSOA image;
+    imgsoa::initializeImageSOA(image, 2, 2);
+    image.r = {255, 0, 0, 255};
+    image.g = {0, 255, 0, 255};
+    image.b = {0, 0, 255, 255};
+
+    imgsoa::writePPM("output.ppm", image, 2, 2);
+    std::ifstream file("output.ppm", std::ios::binary);
+    ASSERT_TRUE(file.is_open());
+}
+
+// Test that writePPM fails when trying to write to an invalid path
+TEST(ImageSOATest, WritePPMFunctionFileNotWritable) {
+    imgsoa::ImageSOA image;
+    imgsoa::initializeImageSOA(image, 2, 2);
+    image.r = {255, 0, 0, 255};
+    image.g = {0, 255, 0, 255};
+    image.b = {0, 0, 255, 255};
+
+    ASSERT_THROW(imgsoa::writePPM("/invalid_path/output.ppm", image, 2, 2), std::runtime_error);
+}
 
 // Test para countColorFrequencySOA - Caso 1: Imagen con colores repetidos
 TEST(ImageSOATest, CountColorFrequencySOA_RepeatedColors) {
@@ -187,7 +233,7 @@ TEST(ImageSOATest, FindClosestColorOptimized_OutOfRange) {
 // NOLINTEND(readability-magic-numbers)
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers)
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+//int main(int argc, char **argv) {
+    //::testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
+//}

@@ -4,6 +4,7 @@ add_executable(utest-imgaos
         compress-utests.cpp
         maxlevel-utests.cpp
 cutfreq-utests.cpp
-resize-utests.cpp)
+resize-utests.cpp
+        maxlevel-utests.cpp)
 
 target_link_libraries(utest-imgaos PRIVATE imgaos GTest::gtest_main Microsoft.GSL::GSL)

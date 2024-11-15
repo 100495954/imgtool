@@ -2,12 +2,58 @@
 #include "imgaos/imageaos.hpp"
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 
 // Definir GRID_SIZE
 static constexpr int GRID_SIZE = 8;
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers)
 // NOLINTBEGIN(readability-magic-numbers)
+
+// Tests for readPPM
+
+// Test that readPPM fails if the file does not exist
+TEST(ImageAOSTest, ReadPPMFunctionFileNotFound) {
+    std::size_t width = 0;
+    std::size_t height = 0;
+    ASSERT_THROW(imgaos::readPPM("nonexistent.ppm", width, height), std::runtime_error);
+}
+
+// Test that readPPM fails if the file has an invalid format
+TEST(ImageAOSTest, ReadPPMFunctionInvalidFormat) {
+    std::ofstream file("invalid.ppm");
+    file << "P3\n";
+    file.close();
+    std::size_t width = 0;
+    std::size_t height = 0;
+    ASSERT_THROW(imgaos::readPPM("invalid.ppm", width, height), std::runtime_error);
+}
+
+// Tests for writePPM
+
+// Test that writePPM successfully writes the image and the file can be opened afterward
+TEST(ImageAOSTest, WritePPMFunctionSuccess) {
+    std::vector<imgaos::Pixel> const image = {
+            {.r=255, .g=0, .b=0}, {.r=0, .g=255, .b=0},
+            {.r=0, .g=0, .b=255}, {.r=255, .g=255, .b=255}
+    };
+    std::size_t const width = 2;
+    std::size_t const height = 2;
+    imgaos::writePPM("output.ppm", image, width, height);
+    std::ifstream file("output.ppm", std::ios::binary);
+    ASSERT_TRUE(file.is_open());
+}
+
+// Test that writePPM fails when trying to write to an invalid path
+TEST(ImageAOSTest, WritePPMFunctionFileNotWritable) {
+    std::vector<imgaos::Pixel> const image = {
+            {.r=255, .g=0, .b=0}, {.r=0, .g=255, .b=0},
+            {.r=0, .g=0, .b=255}, {.r=255, .g=255, .b=255}
+    };
+    std::size_t const width = 2;
+    std::size_t const height = 2;
+    ASSERT_THROW(imgaos::writePPM("/invalid_path/output.ppm", image, width, height), std::runtime_error);
+}
 
 // Test para countColorFrequencyWithParams - Caso 1: Imagen con colores repetidos
 TEST(ImageAOSTest, CountColorFrequencyWithParams_RepeatedColors) {
@@ -165,7 +211,7 @@ TEST(ImageAOSTest, FindClosestColorOptimized_OutOfRange) {
 // NOLINTEND(readability-magic-numbers)
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers)
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+//int main(int argc, char **argv) {
+    //::testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
+//}
