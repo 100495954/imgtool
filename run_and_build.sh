@@ -2,7 +2,7 @@
 
 #Para ejecutar quitar el simbolo de comentario del comando a ajecutar
 
-cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Relase
+cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release
 cmake --build build-release
 
 #TESTS COMPRESS AOS
