@@ -12,13 +12,13 @@ Requisitos
 
 - **Compilador C++** (por ejemplo, `g++`) para compilar el programa `tester.cpp`.
 - **Shell Bash** para ejecutar el script `compare_images.sh`.
-- **Imágenes en formato PPM** como archivos de entrada. Coloca la imagen generada y la imagen de referencia en el mismo directorio que `tester.cpp` y `compare_images.sh`.
+- **Imágenes en formato PPM** como archivos de entrada. Coloca la imagen generada y la imagen de referencia en el mismo directorio que `tester.cpp` y `compare_images.sh`, o proporciona el path correcto.
 
 #### Cómo Usar
 
-1. **Generar la Imagen**: Primero, usa tu programa (por ejemplo, `aos`) para generar una imagen de salida en formato PPM. Guarda esta imagen en el mismo directorio que `tester.cpp` y `compare_images.sh`.
+1. **Generar la Imagen**: Primero, usa tu programa (por ejemplo, `aos`) para generar una imagen de salida en formato PPM. Guarda esta imagen en el mismo directorio ftest.
 
-2. **Colocar las Imágenes**: Asegúrate de que tanto la imagen generada (llamada `generated_image.ppm`) como la imagen de referencia (por ejemplo, `reference_image.ppm`) estén en este directorio.
+2. **Colocar las Imágenes**: Asegúrate de que las imagenes de entrada esten corractamente referenciadas.
 
 3. **Ejecutar la Prueba**:
    - Ejecuta el script `compare_images.sh` con el siguiente comando:
