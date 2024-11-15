@@ -10,7 +10,13 @@
 #include <unordered_set>
 
 namespace imgaos{
-
+    constexpr int MAX_COLOR_VALUE = 255;
+// Constante para el valor máximo de color extendido
+    constexpr int MAX_COLOR_VALUE_EXTENDED = 65535;
+// Constantes para el grid
+    constexpr int GRID_SIZE = 8;
+    constexpr int RED_MULTIPLIER = 10000;
+    constexpr int GREEN_MULTIPLIER = 100;
   struct image_size {
     int width;
     int height;
