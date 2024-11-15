@@ -3,6 +3,5 @@ add_library(common
         binario.cpp
         info.cpp
         info.hpp
-        ../utest-common/utest-common.cpp
 )
 target_link_libraries(common PRIVATE Microsoft.GSL::GSL)

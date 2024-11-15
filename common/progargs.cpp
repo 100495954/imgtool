@@ -2,7 +2,6 @@
 #include "common/progargs.hpp"
 
 #include "imgaos/imageaos.hpp"
-#include "imgsoa/imagesoa.hpp"
 
 #include <cstring>
 #include <iostream>
