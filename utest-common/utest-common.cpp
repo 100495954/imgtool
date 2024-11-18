@@ -138,7 +138,7 @@ TEST(BinaryTest, ReadBinaryError) {
 // Test para binario::write_birary
 TEST(BinaryTest, WriteBinary) {
     std::ostringstream output_stream;
-    double const input_value = 3.14159;
+    double const input_value = std::numbres::pi;
 
     binario::write_birary(output_stream, input_value);
 
