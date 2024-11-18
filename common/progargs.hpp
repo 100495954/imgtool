@@ -14,7 +14,7 @@ namespace progargsCommon {
 
   bool check_argc(int &argc);
   bool args_checker(std::vector<std::string> const &args);
-  bool pertenencia(std::string operation);
+  bool pertenencia(std::string const & operation);
 }
 
 #endif
