@@ -19,13 +19,13 @@ int main(int argc, char *argv[]) {
     progargsCommon::parameters_files const params {.input_file = args[1], .output_file = args[2]};
     imgsoa::compress(params);
     return 0;
-  }else if (strcmp(args[3].c_str(), "maxlevel") == 0){
+  } if (strcmp(args[3].c_str(), "maxlevel") == 0){
     imgsoa::process_parametersSOA(args);
     return 0;
-  }else if (strcmp(args[3].c_str(), "cutfreq") == 0) {
+  } if (strcmp(args[3].c_str(), "cutfreq") == 0) {
     imgsoa::callCutfreq(args);
     return 0;
-  }else if (strcmp(args[3].c_str(), "resize") == 0) {
+  } if (strcmp(args[3].c_str(), "resize") == 0) {
     imgsoa::Picture original;
     if (!imgsoa::loadPPM(args[1], original)) { return 1; }
     imgsoa::Picture const resized = resizeImage(original, std::stoi(args[4]), std::stoi(args[5]));

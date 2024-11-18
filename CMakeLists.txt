@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.29)
 project(imtool-2024 VERSION 1.0 LANGUAGES CXX)
 
 # Print processor and compiler
@@ -34,9 +34,9 @@ FetchContent_Declare(GSL
 FetchContent_MakeAvailable(GSL)
 
 # Enable clang-tidy
-#set(CMAKE_CXX_CLANG_TIDY clang-tidy-19;
-        #-format-style=file;
-        #-header-filter=.;)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy-19;
+        -format-style=file;
+        -header-filter=.;)
 
 
 # Add include directory
