@@ -123,7 +123,7 @@ TEST(BinaryTest, ReadWriteBinary) {
 
     // Lee del flujo binario
     std::istringstream input_stream(output_stream.str());
-    int output_value = binario::read_binary<int>(input_stream);
+    int const output_value = binario::read_binary<int>(input_stream);
 
     // Verifica que el valor leído sea igual al escrito
     EXPECT_EQ(input_value, output_value);
